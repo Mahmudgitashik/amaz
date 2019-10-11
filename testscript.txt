@@ -1,0 +1,67 @@
+package Amazon_Budle_package;
+
+import BasePageObject.BaseClass;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+
+public class PlayStation_BundleProduct  extends BaseClass {
+
+
+    public PlayStation_BundleProduct() throws IOException {
+
+        this.PageURL =  "https://www.amazon.com";
+        logger = extent.createTest("Amazon Playstation Bundle Package Check");
+    }
+
+    @Test
+    public void VerifyBundlePackage() throws InterruptedException {
+
+        //navigate to amazon website
+        loadPage();
+
+        //search playstation
+        SendKeysText(Element("twotabsearchtextbox",""),"Playstation");
+        //Click on search button
+        clickElement(Element("//*[@id=\"nav-search\"]/form/div[2]/div/input","xpath"));
+        //scroll to Product Price
+        WebElement Product= Element("//*[contains(@href,'PlayStation-Slim-1TB-Console-Fortnite')]/span/span[1]","xpath");
+        Actions actions = new Actions(GetWebDriver());
+        actions.moveToElement(Product);
+        actions.perform();
+        Thread.sleep(3000);
+
+        //Get Title
+        String BundleProductTitle = Element("//*[text()='PlayStation 4 Slim 1TB Console - Fortnite Bundle']","xpath").getText();
+        System.out.println(BundleProductTitle);
+        Thread.sleep(2000);
+
+        //Get Price
+        String BundleProductPrice = Element("//*[contains(@href,'PlayStation-Slim-1TB-Console-Fortnite')]/span/span[1]","xpath").getText();
+        System.out.println(BundleProductPrice);
+        Thread.sleep(2000);
+
+        //click Product
+        clickElement(Element("//*[text()='PlayStation 4 Slim 1TB Console - Fortnite Bundle']","xpath"));
+
+        //Capture Product Page Title, Price
+        String ProductTitle = Element("productTitle","").getText();
+        String ProductPrice = Element("//*[@id=\"priceblock_ourprice\"]/div","xpath").getText();
+
+        //assert Product Titles
+        Assert.assertEquals(BundleProductTitle,ProductTitle);
+
+        //assert Product Prices
+        Assert.assertEquals(BundleProductPrice,ProductPrice);
+
+
+
+    }
+
+
+
+
+}//end of test
